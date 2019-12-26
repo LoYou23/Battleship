@@ -13,7 +13,7 @@ import types.Square;
 class GridTest {
 	
 	private static Grid g;
-	private static int[] ships = new int[] { 5, 4, 3, 3, 2 };
+	private static int[] ships = new int[] { 5, 4, 3, 3, 2 }; //TODO - Class for the Ships
 	//ships contains the lengths of the 5 ships (Carrier, Battleship, Cruiser, Submarine and Destroyer)
 	//I thought creating classes for the ships was not relevant for this exercise
 

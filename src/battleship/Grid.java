@@ -4,6 +4,7 @@
 package battleship;
 
 import java.util.Random;
+import java.util.Scanner;
 
 import types.Square;
 
@@ -17,23 +18,24 @@ public class Grid {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Random rand = new Random(System.currentTimeMillis());
+		Scanner sc = new Scanner(System.in);
 		Grid g = new Grid();
 		System.out.println(g.toString());
-		// g.placeShip(5, orientation.HORIZONTAL, new Point(0,0));
-		// g.placeShip(5, orientation.VERTICAL, new Point(0,1));
-		int[] ships = new int[] { 5, 4, 3, 3, 2 };
+		int[] ships = new int[] { 5, 4, 3, 3, 2 }; //TODO - Class for the Ships
 		g.setup(ships);
 		System.out.println(g.toString());
-		int n = 20;
-		for (int i = 0; i < n; i++) {
-			int x = rand.nextInt(GRID_LENGTH);
-			int y = rand.nextInt(GRID_WIDTH);
-			g.shot(x, y);
+		
+		while(!g.check()) {
+			
+			System.out.println("Choix position tir x :");
+			int x = sc.nextInt();
+			System.out.println("Choix position tir y : ");
+			int y = sc.nextInt();
+			
+			g.shot(y, x);
+			System.out.println(g.toString());
 		}
-		System.out.println(n + " tirs au hasard...\n");
-		System.out.println(g.toString());
+		
 	}
 
 	private static final int GRID_LENGTH = 10;
@@ -52,6 +54,11 @@ public class Grid {
 		VERTICAL, HORIZONTAL
 	}
 
+	   /**
+	   * Place a piece of ship
+	   * @param x This is the x coordinate
+	   * @param x  This is the y coordinate
+	   */
 	private void placePiece(int x, int y) {
 
 		field[x] [y]= Square.OCCUPIED;
@@ -101,6 +108,10 @@ public class Grid {
 			return false;
 	}
 
+	   /**
+	   * Place the ship on the field with the orientation o
+	   * On the position (x,y)
+	   */
 	private boolean placeShip(int shiplength, orientation o, int x, int y) {
 		int deltaX, deltaY;
 		int currentX = x;
@@ -128,7 +139,7 @@ public class Grid {
 
 		}
 		currentX = x;
-		currentY = y;// réinitialiser le point initial
+		currentY = y;// reset initial point
 		for (int j = 0; j < shiplength; j++) {
 
 			placePiece(currentX, currentY);
@@ -141,6 +152,9 @@ public class Grid {
 		return true;
 	}
 
+   /**
+    * Returns a random orientation
+   */
 	private orientation pickRandomOrientation(Random rand) {
 		if (rand.nextBoolean())
 			return orientation.HORIZONTAL;
@@ -148,6 +162,10 @@ public class Grid {
 			return orientation.VERTICAL;
 	}
 
+	   /**
+	    * sets the field by placing the ships
+	    * @param ships This is an array containing the lengths of the ships
+	   */
 	public void setup(int[] ships) {
 		initGrid();
 		boolean out = false;
@@ -170,7 +188,10 @@ public class Grid {
 			}
 		}
 	}
-
+	
+   /**
+    * Checks if the game is over
+   */
 	public boolean check() {
 		int nbDestroyed = 0;
 		for (int i = 0; i < GRID_LENGTH; i++) {
@@ -185,6 +206,10 @@ public class Grid {
 		return nbDestroyed > 0;
 	}
 
+   /**
+    * Shots on a square at position (x,y)
+    * @return Square returns the state of the square shot
+   */
 	public Square shot(int x, int y) {
 		if (field[x][y] == Square.OCCUPIED)
 			field[x][y]= Square.DESTROYED;
