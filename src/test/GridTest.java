@@ -31,6 +31,7 @@ class GridTest {
 	@Test
 	void testShot() {
 		System.out.println("TEST SHOT");
+		System.out.println(g);
 		Square square = g.shot(7, 8);
 		assertTrue(square == Square.DESTROYED || square == Square.SHOT);
 		square = g.shot(7, 8);

@@ -65,6 +65,14 @@ public class Grid {
 
 	}
 
+   /**
+    * Overriding toString()
+    * Returns a String representing the field
+    * X = Missed Shot
+    * O = Occupied Square
+    * E = Empty Square
+    * D = Destroyed Piece of Ship
+   */
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
