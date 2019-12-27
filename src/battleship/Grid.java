@@ -35,6 +35,7 @@ public class Grid {
 			g.shot(y, x);
 			System.out.println(g.toString());
 		}
+		System.out.println("Game over !");
 		
 	}
 
@@ -178,11 +179,10 @@ public class Grid {
 		initGrid();
 		boolean out = false;
 		Random rand = new Random(System.currentTimeMillis());
+		int[] listX = Utils.getRandomRange(GRID_LENGTH); //Generates a random sequence of numbers from 0 to 9 with no doublons
+		int[] listY = Utils.getRandomRange(GRID_WIDTH);
 		for (int shiplength : ships) {
 			orientation o = pickRandomOrientation(rand);
-			// System.out.println(o);
-			int[] listX = Utils.getRandomRange(GRID_LENGTH);
-			int[] listY = Utils.getRandomRange(GRID_WIDTH);
 			for (int x : listX) {
 				out = false;
 				for (int y : listY) {
