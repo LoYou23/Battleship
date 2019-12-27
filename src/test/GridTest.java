@@ -26,7 +26,6 @@ class GridTest {
 	void setUp() throws Exception {
 		
 		g.setup(ships);
-		g.getField()[0][0] = Square.SHOT;
 	}
 	
 	@Test
