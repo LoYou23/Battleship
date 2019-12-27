@@ -3,6 +3,7 @@
  */
 package battleship;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -23,6 +24,7 @@ public class Grid {
 		System.out.println(g.toString());
 		int[] ships = new int[] { 5, 4, 3, 3, 2 }; //TODO - Class for the Ships
 		g.setup(ships);
+		g.getField()[0][0] = Square.SHOT;
 		System.out.println(g.toString());
 		
 		while(!g.check()) {
@@ -31,8 +33,9 @@ public class Grid {
 			int x = sc.nextInt();
 			System.out.println("Choix position tir y : ");
 			int y = sc.nextInt();
-			
-			g.shot(y, x);
+			x = (x>=0 && x<10) ? x :0;
+			y = (y>=0 && y<10) ? y :0;	
+			g.shot(x, y);
 			System.out.println(g.toString());
 		}
 		System.out.println("Game over !");
@@ -44,6 +47,14 @@ public class Grid {
 
 	private Square[][] field;
 
+	
+	/**
+	 * Getter for the field
+	 *@return Returns a copy of the field
+	 */
+	public Square[][] getField() {
+		return Arrays.stream(field).map(Square[]::clone).toArray(Square[][]::new);
+	}
 
 	public Grid() {
 		field = new Square[GRID_LENGTH][GRID_WIDTH];
@@ -62,7 +73,7 @@ public class Grid {
 	   */
 	private void placePiece(int x, int y) {
 
-		field[x] [y]= Square.OCCUPIED;
+		field[x][y]= Square.OCCUPIED;
 
 	}
 
@@ -179,7 +190,7 @@ public class Grid {
 		initGrid();
 		boolean out = false;
 		Random rand = new Random(System.currentTimeMillis());
-		int[] listX = Utils.getRandomRange(GRID_LENGTH); //Generates a random sequence of numbers from 0 to 9 with no doublons
+		int[] listX = Utils.getRandomRange(GRID_LENGTH); //Generates a random sequence of numbers from 0 to 9 with no duplicates
 		int[] listY = Utils.getRandomRange(GRID_WIDTH);
 		for (int shiplength : ships) {
 			orientation o = pickRandomOrientation(rand);
@@ -226,10 +237,6 @@ public class Grid {
 		
 		return field[x][y];
 	}
-	
-	public Square getSquareState(int x, int y) {
-		return field[x][y];
-	}
-	
+		
 
 }

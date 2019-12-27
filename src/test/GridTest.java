@@ -26,8 +26,9 @@ class GridTest {
 	void setUp() throws Exception {
 		
 		g.setup(ships);
+		g.getField()[0][0] = Square.SHOT;
 	}
-
+	
 	@Test
 	void testShot() {
 		System.out.println("TEST SHOT");
@@ -58,7 +59,6 @@ class GridTest {
 	
 	@Test
 	void testSetup() {
-		System.out.println("TEST SETUP");
 		int numPieces = 0;
 		for(int num : ships)
 			numPieces = numPieces + num;
@@ -76,9 +76,10 @@ class GridTest {
 	
 	private static int countPieces() {
 		int res = 0;
+		Square field[][] = g.getField();
 		for (int i = 0; i<10; i++) {
 			for (int j = 0; j<10; j++) {
-				if(g.getSquareState(i, j) == Square.OCCUPIED)
+				if(field[i][j] == Square.OCCUPIED)
 					res++;
 			}
 		}
