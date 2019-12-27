@@ -24,7 +24,6 @@ public class Grid {
 		System.out.println(g.toString());
 		int[] ships = new int[] { 5, 4, 3, 3, 2 }; //TODO - Class for the Ships
 		g.setup(ships);
-		g.getField()[0][0] = Square.SHOT;
 		System.out.println(g.toString());
 		
 		while(!g.check()) {
@@ -61,10 +60,6 @@ public class Grid {
 		initGrid();
 	}
 
-
-	private enum orientation {
-		VERTICAL, HORIZONTAL
-	}
 
 	   /**
 	   * Place a piece of ship
@@ -128,20 +123,21 @@ public class Grid {
 			return false;
 	}
 
+	
 	   /**
 	   * Place the ship on the field with the orientation o
 	   * On the position (x,y)
 	   */
-	private boolean placeShip(int shiplength, orientation o, int x, int y) {
+	private boolean placeShip(int shiplength, boolean vertical, int x, int y) {
 		int deltaX, deltaY;
 		int currentX = x;
 		int currentY = y;
-		if (o == orientation.VERTICAL) {
+		if (vertical) { // if orientation is vertical
 			deltaX = 0;
 			deltaY = 1;
 		}
 
-		else { // o == orientation.HORIZONTAL
+		else { 
 			deltaX = 1;
 			deltaY = 0;
 		}
@@ -172,15 +168,6 @@ public class Grid {
 		return true;
 	}
 
-   /**
-    * Returns a random orientation
-   */
-	private orientation pickRandomOrientation(Random rand) {
-		if (rand.nextBoolean())
-			return orientation.HORIZONTAL;
-		else
-			return orientation.VERTICAL;
-	}
 
 	   /**
 	    * sets the field by placing the ships
@@ -188,16 +175,16 @@ public class Grid {
 	   */
 	public void setup(int[] ships) {
 		initGrid();
-		boolean out = false;
+		boolean out,vertical;
 		Random rand = new Random(System.currentTimeMillis());
 		int[] listX = Utils.getRandomRange(GRID_LENGTH); //Generates a random sequence of numbers from 0 to 9 with no duplicates
 		int[] listY = Utils.getRandomRange(GRID_WIDTH);
 		for (int shiplength : ships) {
-			orientation o = pickRandomOrientation(rand);
+			vertical = rand.nextBoolean();
 			for (int x : listX) {
 				out = false;
 				for (int y : listY) {
-					if (placeShip(shiplength, o, x, y)) {
+					if (placeShip(shiplength, vertical, x, y)) {
 						out = true;
 						break;
 					}
