@@ -16,7 +16,7 @@ import types.Square;
 public class Grid {
 
 	/**
-	 * @param args
+	 * Main function to play the game on the console
 	 */
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -34,7 +34,7 @@ public class Grid {
 			int y = sc.nextInt();
 			x = (x>=0 && x<10) ? x :0;
 			y = (y>=0 && y<10) ? y :0;	
-			g.shot(x, y);
+			g.shoot(x, y);
 			System.out.println(g.toString());
 		}
 		System.out.println("Game over !");
@@ -61,16 +61,7 @@ public class Grid {
 	}
 
 
-	   /**
-	   * Place a piece of ship
-	   * @param x This is the x coordinate
-	   * @param x  This is the y coordinate
-	   */
-	private void placePiece(int x, int y) {
 
-		field[x][y]= Square.OCCUPIED;
-
-	}
 
    /**
     * Overriding toString()
@@ -87,19 +78,21 @@ public class Grid {
 		for (int i = 0; i < GRID_WIDTH; i++) {
 			for (int j = 0; j < GRID_LENGTH; j++) {
 				if (field[i][j]== Square.EMPTY) {
-					b.append(".  ");
+					b.append(".");
 				}
 
 				else if (field[i][j] == Square.OCCUPIED) {
-					b.append("O  ");
+					b.append("O");
 				}
 
 				else if (field[i][j] == Square.SHOT)
-					b.append("X  ");
+					b.append("X");
 
 				else {
-					b.append("D  ");
+					b.append("D");
 				}
+				
+				b.append("  ");
 			}
 
 			b.append("\n");
@@ -115,35 +108,27 @@ public class Grid {
 			}
 		}
 	}
-
-	private boolean isSquareAvailable(int x, int y) {
-		if (field[x][y] == Square.EMPTY)
-			return true;
-		else
-			return false;
-	}
-
 	
-	   /**
-	   * Place the ship on the field with the orientation o
-	   * On the position (x,y)
-	   */
+   /**
+   * Place the ship on the field with the orientation o
+   * On the position (x,y)
+   */
 	private boolean placeShip(int shiplength, boolean vertical, int x, int y) {
 		int deltaX, deltaY;
 		int currentX = x;
 		int currentY = y;
 		if (vertical) { // if orientation is vertical
-			deltaX = 0;
-			deltaY = 1;
-		}
-
-		else { 
 			deltaX = 1;
 			deltaY = 0;
 		}
 
+		else { 
+			deltaX = 0;
+			deltaY = 1;
+		}
+
 		for (int i = 0; i < shiplength; i++) {
-			if (!isSquareAvailable(currentX, currentY))
+			if (!(field[currentX][currentY] == Square.EMPTY))
 				return false;
 			else {
 				currentX = currentX + deltaX;
@@ -158,7 +143,7 @@ public class Grid {
 		currentY = y;// reset initial point
 		for (int j = 0; j < shiplength; j++) {
 
-			placePiece(currentX, currentY);
+			field[currentX][currentY]= Square.OCCUPIED;
 
 			currentX = currentX + deltaX;
 			currentY = currentY + deltaY;
@@ -169,10 +154,10 @@ public class Grid {
 	}
 
 
-	   /**
-	    * sets the field by placing the ships
-	    * @param ships This is an array containing the lengths of the ships
-	   */
+   /**
+    * sets the field by placing the ships
+    * @param ships This is an array containing the lengths of the ships
+   */
 	public void setup(int[] ships) {
 		initGrid();
 		boolean out,vertical;
@@ -216,7 +201,7 @@ public class Grid {
     * Shots on a square at position (x,y)
     * @return Square returns the state of the square shot
    */
-	public Square shot(int x, int y) {
+	public Square shoot(int x, int y) {
 		if (field[x][y] == Square.OCCUPIED)
 			field[x][y]= Square.DESTROYED;
 		else if (field[x][y] == Square.EMPTY)

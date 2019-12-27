@@ -29,16 +29,19 @@ class GridTest {
 	}
 	
 	@Test
-	void testShot() {
+	void testShoot() {
 		System.out.println("TEST SHOT");
 		System.out.println(g);
-		Square square = g.shot(7, 8);
-		assertTrue(square == Square.DESTROYED || square == Square.SHOT);
-		square = g.shot(7, 8);
+		g.shoot(7, 8);
+		//Shot at (7,8) then check the state of this square
+		Square square = g.getField()[7][8];
 		assertFalse(square == Square.OCCUPIED);
 		assertFalse(square == Square.EMPTY);
+		assertTrue(square == Square.DESTROYED || square == Square.SHOT);
+
+		//Try to shot at (10,10), should raise an exception
 		assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
-			g.shot(10, 10);
+			g.shoot(10, 10);
 		});
 		
 		System.out.println(g);
@@ -48,9 +51,10 @@ class GridTest {
 	void testCheck() {
 		System.out.println("TEST CHECK");
 		System.out.println(g);
-		
+		//Checks if the game is over before even playing
 		assertFalse(g.check());
 		shotAll();
+		//Checks if the game is over after shooting all squares
 		assertTrue(g.check());
 		
 		System.out.println(g);
@@ -61,6 +65,7 @@ class GridTest {
 		int numPieces = 0;
 		for(int num : ships)
 			numPieces = numPieces + num;
+		//Checks if the number of pieces is the same between ships list and the field
 		assertEquals(numPieces,countPieces());
 		assertFalse(g.check());
 	}
@@ -68,12 +73,12 @@ class GridTest {
 	private static void shotAll() { //Helper function to shot all squares
 		for (int i = 0; i<10; i++) {
 			for (int j = 0; j<10; j++) {
-				g.shot(i, j);
+				g.shoot(i, j);
 			}
 		}
 	}
 	
-	private static int countPieces() {
+	private static int countPieces() { //Helper function to count the pieces on the field
 		int res = 0;
 		Square field[][] = g.getField();
 		for (int i = 0; i<10; i++) {
