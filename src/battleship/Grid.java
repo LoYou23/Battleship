@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+import types.Orientation;
 import types.Square;
 
 /**
@@ -57,7 +58,7 @@ public class Grid {
 
 	public Grid() {
 		field = new Square[GRID_LENGTH][GRID_WIDTH];
-		initGrid();
+		initField();
 	}
 
 
@@ -85,7 +86,7 @@ public class Grid {
 					b.append("O");
 				}
 
-				else if (field[i][j] == Square.SHOT)
+				else if (field[i][j] == Square.MISSED)
 					b.append("X");
 
 				else {
@@ -101,7 +102,7 @@ public class Grid {
 		return b.toString();
 	}
 
-	private void initGrid() {
+	public void initField() {
 		for (int i = 0; i < GRID_LENGTH; i++) {
 			for (int j = 0; j < GRID_WIDTH; j++) {
 				field[i][j] = Square.EMPTY;
@@ -113,11 +114,11 @@ public class Grid {
    * Place the ship on the field with the orientation o
    * On the position (x,y)
    */
-	private boolean placeShip(int shiplength, boolean vertical, int x, int y) {
+	public boolean placeShip(int shiplength, Orientation o, int x, int y) {
 		int deltaX, deltaY;
 		int currentX = x;
 		int currentY = y;
-		if (vertical) { // if orientation is vertical
+		if (o == Orientation.VERTICAL) { // if orientation is vertical
 			deltaX = 1;
 			deltaY = 0;
 		}
@@ -159,17 +160,18 @@ public class Grid {
     * @param ships This is an array containing the lengths of the ships
    */
 	public void setup(int[] ships) {
-		initGrid();
+		initField();
 		boolean out,vertical;
 		Random rand = new Random(System.currentTimeMillis());
 		int[] listX = Utils.getRandomRange(GRID_LENGTH); //Generates a random sequence of numbers from 0 to 9 with no duplicates
 		int[] listY = Utils.getRandomRange(GRID_WIDTH);
 		for (int shiplength : ships) {
 			vertical = rand.nextBoolean();
+			Orientation o = (vertical ? Orientation.VERTICAL : Orientation.HORIZONTAL);
 			for (int x : listX) {
 				out = false;
 				for (int y : listY) {
-					if (placeShip(shiplength, vertical, x, y)) {
+					if (placeShip(shiplength, o, x, y)) {
 						out = true;
 						break;
 					}
@@ -205,7 +207,7 @@ public class Grid {
 		if (field[x][y] == Square.OCCUPIED)
 			field[x][y]= Square.DESTROYED;
 		else if (field[x][y] == Square.EMPTY)
-			field[x][y] =  Square.SHOT;
+			field[x][y] =  Square.MISSED;
 		
 		return field[x][y];
 	}

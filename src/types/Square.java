@@ -1,5 +1,5 @@
 package types;
 
 public enum Square {
-	EMPTY,DESTROYED,OCCUPIED,SHOT
+	EMPTY,DESTROYED,OCCUPIED,MISSED
 }
