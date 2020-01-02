@@ -77,6 +77,7 @@ class GridTest {
 	@Test
 	void testSetup() {
 		g.setup(ships);
+		System.out.println(g);
 		assertEquals(excpectedNumShips,countPieces());
 		assertFalse(g.check());
 	}
